@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TurboCrash.bet</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #f00;
+    }
+    #crash-value {
+      font-size: 60px;
+      margin: 40px 0;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .start-btn { background-color: #28a745; color: #fff; }
+    .stop-btn { background-color: #ffc107; color: #000; }
+    .cashout-msg { color: #0f0; font-size: 24px; }
+  </style>
+</head>
+<body>
+  <h1>TurboCrash.bet</h1>
+  <div id="crash-value">1.00x</div>
+  <button class="btn start-btn" onclick="startGame()">Entrar</button>
+  <button class="btn stop-btn" onclick="cashOut()">Sacar</button>
+  <div id="message"></div>
+
+  <script>
+    let crash = 1.00;
+    let interval;
+    let inGame = false;
+    let cashedOut = false;
+
+    function startGame() {
+      if (inGame) return;
+      crash = 1.00;
+      cashedOut = false;
+      document.getElementById("message").innerText = "";
+      inGame = true;
+      interval = setInterval(() => {
+        crash += (Math.random() * 0.05 + 0.01);
+        document.getElementById("crash-value").innerText = crash.toFixed(2) + "x";
+        if (Math.random() < 0.01) {
+          endGame();
+        }
+      }, 100);
+    }
+
+    function endGame() {
+      clearInterval(interval);
+      inGame = false;
+      if (!cashedOut) {
+        document.getElementById("message").innerText = "💥 Crash! Você perdeu.";
+      }
+    }
+
+    function cashOut() {
+      if (!inGame || cashedOut) return;
+      cashedOut = true;
+      clearInterval(interval);
+      inGame = false;
+      document.getElementById("message").innerText = `✅ Você sacou em ${crash.toFixed(2)}x!`;
+    }
+  </script>
+</body>
+</html>
